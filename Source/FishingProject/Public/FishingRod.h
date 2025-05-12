@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "FishingRod.generated.h"
 
+class UFishingLineComponent;
 // Forward declarations
 class USceneComponent;
 class UStaticMeshComponent;
@@ -26,6 +27,7 @@ class AFishingRod : public AActor
 public:
 	// --- CONSTRUCTOR ---
 	AFishingRod();
+	void OnConstruction(const FTransform& Transform);
 
 	// --- UE4 LIFECYCLE ---
 protected:
@@ -131,7 +133,8 @@ protected:
 
 	/** Cable component to visually represent the fishing line. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UCableComponent* FishingLineComponent;
+	UFishingLineComponent* FishingLineComponent;
+	
 
 	// --- CONFIGURATION ---
 protected:
@@ -143,6 +146,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fishing Rod|Configuration")
 	float ReelInSpeed;
 
+	/** The class of UFishingLineComponent to use for this rod. Assign this in Blueprints. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fishing Rod|Configuration")
+	TSubclassOf<UFishingLineComponent> FishingLineClass;
+	
 	/** Speed at which the line can be extended (units per second). */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fishing Rod|Configuration")
 	float ExtendSpeed;

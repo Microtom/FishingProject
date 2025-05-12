@@ -165,18 +165,13 @@ void AFishingBobber::EnterIdleState()
  */
 void AFishingBobber::EnterDanglingState()
 {
-	UE_LOG(LogFishingSystemBobber, Log, TEXT("%s Entering DanglingAtTip State (Physics ON)."), *GetName());
+	UE_LOG(LogFishingSystemBobber, Log, TEXT("%s Entering DanglingAtTip State (Bobber Physics OFF, Line Controlled)."), *GetName());
 	if (BobberMeshComponent)
 	{
-		BobberMeshComponent->SetSimulatePhysics(true); // Ensure it's on
-		BobberMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		BobberMeshComponent->SetCollisionProfileName(TEXT("PhysicsActor"));
-		// Adjust damping for dangle
-		BobberMeshComponent->SetLinearDamping(2.0f);
-		BobberMeshComponent->SetAngularDamping(0.8f);
-		// BobberMeshComponent->SetMassOverrideInKg(NAME_None, 0.05f, true);
-		// IntendedMass = 0.05f;
-		BobberMeshComponent->WakeRigidBody();
+		BobberMeshComponent->SetSimulatePhysics(false); // Correct: Bobber doesn't simulate its own movement
+		BobberMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly); // Or NoCollision if preferred
+		// BobberMeshComponent->SetEnableGravity(false); // Redundant
+		BobberMeshComponent->WakeRigidBody(); // Harmless
 	}
 }
 
